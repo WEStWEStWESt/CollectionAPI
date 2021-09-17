@@ -1,14 +1,11 @@
 package collections.sets;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Sets {
     public static void main(String[] args) {
         /*
-           SET - неупорядоченное множество уникальных объктов.
+           SET - неупорядоченное множество уникальных объектов.
            HashSet строится на основе HashMap. HashMap(key, value) поддерживает уникальность хранимых ключей.
            Значения при этом могут быть НЕ уникальными.
 
@@ -19,16 +16,72 @@ public class Sets {
               NULL  тоже может находится В ЕДИНСТВЕННОМ ЭКЗЕМПЛЯРЕ !
            2. Проверка на наличие в SETе УЖЕ ИМЕЮЩЕГОСЯ объекта (метод contains()).
         */
-        List<String> listStrings = new ArrayList<>(List.of("A", "B", "C", "A"));
+        List<String> listStrings = new ArrayList<>(List.of("Z", "B", "C", "A", "D"));
         Set<String> setLists = new HashSet<>(listStrings);
         System.out.println("listStrings: " + listStrings);
         System.out.println("changed setLists: " + setLists);
         if (setLists.contains("A")) {
+            /* Добавление .add() в конец HashSet элементов НЕ ГАРАНТИРУЕТСЯ !
+               Так же при добавлении новых элементов может произойти реорганизация(изментся порядок)
+               всех имеющихся объектов. Связано с работой Map и её load-фактором(см.секцию про HashMap)...
+             */
             setLists.remove("A");
             setLists.add("F");
             System.out.println(setLists);
         } else {
             System.out.println("Element not found!");
         }
+
+        /* LinkedHashSet гарантирует порядок вставки в конец множества.
+           Остальные свойства такие же, как и у HashSet.*/
+        Set<String> linkedHashSets = new LinkedHashSet<>(listStrings);
+
+        /* TreeSet - реализован при помощи TreeMap, которая всегда сохраняет ЕСТЕСТВЕННЫЙ ПОРЯДОК СОРТИРОВКИ,
+           который обеспечивается интерфейсом Comparable. Если такого порядка нет(Comparable не реализован),
+           в процессе использования TreeSet будет выбрасываться ошибка ClassCastException, т.к. TreeMap пытается
+           Кастить(приводить к типу) все объекты в Comparable.
+           Если в конструктор предан Comparator, то вместо Comparable(естественного порядка), будет использоваться он.
+
+           Некоторые объекты(String, обёрточные типы(Враперы) и др) имеют ЕСТЕСТВЕННЫЙ ПОРЯДОК СОРТИРОВКИ по умолчанию.
+        */
+        Set<String> treeSetStrings = new TreeSet<>(listStrings);
+        Set<Object> treeSetObjects = new TreeSet<>(Collections.reverseOrder());
+        /*Set<Object> treeSetObjectExceptions = new TreeSet<>(List.of(new Object(), new Object())); - Exception !!! */
+        treeSetObjects.addAll(listStrings);
+        System.out.println("native order: " + treeSetStrings);
+        System.out.println("reversed order(Comparator): " + treeSetObjects);
+
+        class LocalComparable implements Comparable<LocalComparable> {
+
+            private int number;
+
+            public LocalComparable(int number) {
+                this.number = number;
+            }
+
+            @Override
+            public int compareTo(LocalComparable localComparable) {
+
+                return Integer.compare(number, localComparable.number);
+            }
+
+            @Override
+            public String toString() {
+                return "" + number;
+            }
+        }
+        Set<Object> treeSetLocalComparable = new TreeSet<>(List.of(new LocalComparable(2), new LocalComparable(1)));
+        System.out.println("treeSetLocalComparable: " + treeSetLocalComparable);
+
+        class LocalComparator implements Comparator<LocalComparable> {
+
+            @Override
+            public int compare(LocalComparable t1, LocalComparable t2) {
+                return t2.number < t1.number ? -1 : (t2.number == t1.number ? 0 : 1);
+            }
+        }
+        Set<LocalComparable> treeSetLocalComparator = new TreeSet<>(new LocalComparator());
+        treeSetLocalComparator.addAll(List.of(new LocalComparable(1), new LocalComparable(2)));
+        System.out.println("treeSetLocalComparator: " + treeSetLocalComparator);
     }
 }
