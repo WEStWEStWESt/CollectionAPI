@@ -14,19 +14,48 @@ public class Queues {
           E poll(): возвращает с удалением элемент из начала очереди. Если очередь пуста, возвращает значение null
           E remove(): возвращает с удалением элемент из начала очереди. Если очередь пуста, генерирует исключение NoSuchElementException*/
 
+        /* QUEUE.
+           Коллекция, предоставляющая доступ к элементам в нужном порядке, без применения прямой итерации.
+
+           FIFO (first in, first out) - базовый функционал(порядок вставки элементов) интерфейса Queue.
+
+           Вставка - add() , offer();
+           Извлечение - poll()+ , remove();
+           Просмотр - element() , peek()+;
+
+           ЕСТЕСТВЕННЫЙ ПОРЯДОК СОРТИРОВКИ - NORMAL SORTING ORDER (ASCENDING), обратный ему - DESCENDING.
+        */
+
+        /* PriorityQueue.
+        *  Предоставляет функционал Queue, но порядок сортировки объектов либо нативный(естественный),
+           для Comparable-элементов, и через Comparator - для прочих.
+           !!! СРАВНИВАЕМЫЕ В КОМПАРАТОРЕ ПАРАМЕТРЫ ИЛИ ПОЛЯ ЭЛЕМЕНТОВ ДОЛЖНЫ БЫТЬ COMPARABLE !!!
+           PriorityQueue - "ТЯЖЁЛЫЙ РЕСУРС" из-за использования внутреннего автоматического механизма сортировки.
+         */
+
+        /* priorityQueue.
+           Тут независимо от порядка вставки элементов, при их получении, они будут отсортированы
+           ЕСТЕСТВЕННЫМ ПОРЯДКОМ СОРТИРОВКИ АТВОМАТИЧЕСКИ.
+           */
         Queue<String> priorityQueue = new PriorityQueue<>(List.of("Zz", "Bb", "Cc", "Dd"));
         priorityQueue.add("Aa");
         print(priorityQueue);
 
-        Queue<List<String>> priorityQueue1 = new PriorityQueue<>(
+        /* priorityQueueIncomparable.
+           Очередь содержит элементы, не сортируемые естетсвенным образом(Лист листов - МУЛЬТИЛИСТ).
+           Для их сортировки применяется Comparator.
+           */
+        Queue<List<String>> priorityQueueIncomparable = new PriorityQueue<>(
                 Comparator.comparing(list -> list.get(0)));
-        priorityQueue1.addAll(List.of(List.of("Bbs"), List.of("OaO")));
+        priorityQueueIncomparable.addAll(List.of(List.of("Bbs"), List.of("OaO")));
+        print(priorityQueueIncomparable);
 
-        print(priorityQueue1);
-
-        Queue<String> priorityQueueComparator = new PriorityQueue<>(Comparator.reverseOrder());
-        priorityQueueComparator.addAll(List.of("Zz", "Bb", "Cc", "Dd"));
-        print(priorityQueueComparator);
+        /* priorityQueueReversed.
+           Естественный порядок сортировки заменяется на обратный при помощи Компаратора.
+           */
+        Queue<String> priorityQueueReversed = new PriorityQueue<>(Comparator.reverseOrder());
+        priorityQueueReversed.addAll(List.of("Zz", "Bb", "Cc", "Dd"));
+        print(priorityQueueReversed);
     }
 
     private static void print(Queue<?> queue) {
@@ -35,4 +64,17 @@ public class Queues {
         }
         System.out.println();
     }
+
+    /*  DEQUE.
+        Двунапрвленная очередь.
+        Помимо методов Queue, добавляются их аналоги для Головы(Head - first) и Хвоста(Tail - last),
+        а так же методы стека:
+        LIFO (last in , first out).
+        Вставка - push() , addFirst();
+        Извлечение - pop() , removeFirst();
+        Просмотр - peek() , peekFirst();
+
+        ArrayDeque - аналогично как и ArrayList, используется для вставки элементов в конец коллекции.
+        LinkedList - для вставки в начало и в середину.
+       */
 }
