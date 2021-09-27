@@ -1,5 +1,7 @@
 package collections.maps;
 
+import java.util.*;
+
 public class Maps {
     public static void main(String[] args) {
         /*
@@ -31,5 +33,8 @@ public class Maps {
            элементы в Bucket.
          */
 
+        Map<Integer, String> hashMaps = new HashMap<>();
+        Map<Integer, String> treeMaps = new TreeMap<>();
+        Map<Integer, String> linkedHashMaps = new LinkedHashMap<>();
     }
 }
