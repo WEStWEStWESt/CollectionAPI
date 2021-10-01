@@ -83,6 +83,20 @@ public class Streams {
         System.out.println("any elements startsWith \"a\": " + strings.stream()
                 .anyMatch(s -> s.startsWith("a")));
 
+        /* Для выборки одного элемента стрима можно использовать терминальные методы .findAny() и .findFirst(),
+           которые возвращают Optional из объекта стрима, даже если объект стрима null !!!!
+           Далее вызывается метод Optional-а .map(), который сработает только в том случае,
+           если Optional НЕ СОДЕРЖИТ NULL !!!
+           В противном случае вызывается orElse(), возвращающий объект, переданный в этот метод(тут: "unknown").
+          */
+        /* OPTIONAL - объект, служащий для того, чтобы исключить проверки на null(и nullPointerException)
+           Он описан в декларативном стиле(т.е. сначала описывается вся цепочка действий, а после происходит исполнение).
+           В stream - сначала описываются все промежуточные методы, а в конце - один терминальный.
+           В Optional - сначала описываются все опциональные методы(не обязательные),а после один Дефолтный,
+           который сработает, только если Optional получил Null. В этом случае все опциональные методы применяться НЕ будут.
+           Если метод возвращает Optional, то это ОПТИОНАЛЬНЫЙ метод.
+           Если метод возвращает любой другой объект, то это ДЕФОЛТНЫЙ метод(вместо Null).
+         */
         System.out.println("filtering with Optional, if exists - remove the last \"A\": " + strings.stream()
                 .filter(s -> s.endsWith("A"))
                 .findAny()
@@ -91,5 +105,7 @@ public class Streams {
 
         System.out.println("PRINTING STREAM USING FOREACH: ");
         strings.forEach(System.out::println);
+        /* .forEach(System.out::println) - метод интерфейса Iterable. Аналогичен терминальному методу стрима,
+           применяет переданную в него функцию к каждому элементу ! */
     }
 }
