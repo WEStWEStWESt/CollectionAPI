@@ -16,6 +16,16 @@ public class Sets {
               NULL  тоже может находится В ЕДИНСТВЕННОМ ЭКЗЕМПЛЯРЕ !
            2. Проверка на наличие в SETе УЖЕ ИМЕЮЩЕГОСЯ объекта (метод contains()).
         */
+        /*
+          В конструктор любой коллекции можно передать уже существующую коллекцию и создать на её основе новую,
+          при этом типы коллекций могут отличаться. При этом элементы передаваемые из одной колл.в.другую,
+          пройдут "фильтрацию" в соответствии с требованиями коллекции, в которую передают эти элементы.
+          Такой способ создания коллекции использует дополнительный цикл !
+
+          Пример: из List в Set !
+          При этом дублирующиеся элементы будут удалены в связи с требованием к уникальности объектов в Сете !
+
+          */
         List<String> listStrings = new ArrayList<>(List.of("Z", "B", "C", "A", "D"));
         Set<String> setLists = new HashSet<>(listStrings);
         System.out.println("listStrings: " + listStrings);
@@ -46,6 +56,10 @@ public class Sets {
         */
         Set<String> treeSetStrings = new TreeSet<>(listStrings);
         Set<Object> treeSetObjects = new TreeSet<>(Collections.reverseOrder());
+        /*  Внимание! Обратить внимание на тип treeSetObjects. Сет содержит  <Object>,
+            т.к. TreeSet<>() создаётся при помощи передачи в конструктор компаратора
+            с использованием утилиты Collections.reverseOrder(),
+            которая не принимает конкретного типа(она типизирована под Object! ).*/
         /*Set<Object> treeSetObjectExceptions = new TreeSet<>(List.of(new Object(), new Object())); - Exception !!! */
         treeSetObjects.addAll(listStrings);
         System.out.println("native order: " + treeSetStrings);
